@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Code Finder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Find Currency Code by Name</h1>
+        <form method="post" class="search-form">
+            <label for="currency_name">Currency Name:</label>
+            <input type="text" id="currency_name" name="currency_name" required>
+            <button type="submit">Search</button>
+        </form>
+
+        {% if currency_data %}
+            {% if currency_data.error %}
+                <p class="error">{{ currency_data.error }}</p>
+            {% elif currency_data %}
+                <h2 class="results-title">Search Results:</h2>
+                <div class="results">
+                    <ul>
+                        {% for currency in currency_data %}
+                            <li>
+                                <span class="currency-symbol">{{ currency['symbol'] }}</span>
+                                {{ currency['name'] }} ({{ currency['code'] }})
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% else %}
+                <p>No results found for your query.</p>
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html>
