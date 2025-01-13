@@ -7,33 +7,52 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Find Currency Code by Name</h1>
-        <form method="post" class="search-form">
-            <label for="currency_name">Currency Name:</label>
-            <input type="text" id="currency_name" name="currency_name" required>
-            <button type="submit">Search</button>
-        </form>
+    <h1>Find Currency Code by Name</h1>
+    <form method="post">
+        <label for="currency_name">Currency Name:</label>
+        <input type="text" id="currency_name" name="currency_name" required>
+        <button type="submit">Search</button>
+    </form>
 
-        {% if currency_data %}
-            {% if currency_data.error %}
-                <p class="error">{{ currency_data.error }}</p>
-            {% elif currency_data %}
-                <h2 class="results-title">Search Results:</h2>
-                <div class="results">
-                    <ul>
-                        {% for currency in currency_data %}
-                            <li>
-                                <span class="currency-symbol">{{ currency['symbol'] }}</span>
-                                {{ currency['name'] }} ({{ currency['code'] }})
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% else %}
-                <p>No results found for your query.</p>
-            {% endif %}
+    {% if currency_data %}
+        {% if currency_data.error %}
+            <p>{{ currency_data.error }}</p>
+        {% elif currency_data %}
+            <h2>Search Results:</h2>
+            <ul>
+                {% for currency in currency_data %}
+                    <li>{{ currency['name'] }} ({{ currency['code'] }}) - {{ currency['symbol'] }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No results found for your query.</p>
         {% endif %}
+    {% endif %}
+
+    <hr>
+    <h1>You know what currencies are we interested in? Bitcoin. Study Bitcoin, and...</h1>
+
+    <h2>Support Us with Bitcoin or Lightning</h2>
+    <div class="crypto-address">
+        <label for="bitcoin-address">Bitcoin Address:</label>
+        <input type="text" id="bitcoin-address" value="zpub6mfeZxdRAuTkjQyDkbA1Z992nGehekouhB4g89kzmHEJz9ubFrhmwKYaE7Wzpd7RbtMm4jg778swGqqNRnKGn3EkaPkpV9AaEyrE1QMvku4" readonly>
+        <button onclick="copyToClipboard('bitcoin-address')">Copy</button>
     </div>
+
+    <div class="crypto-address">
+        <label for="lightning-address">Lightning Address:</label>
+        <input type="text" id="lightning-address" value="02874392e660466ead3f4d328f0ca6a68754ee78589317720a6fd3a66651904c6b" readonly>
+        <button onclick="copyToClipboard('lightning-address')">Copy</button>
+    </div>
+
+    <script>
+        function copyToClipboard(elementId) {
+            var copyText = document.getElementById(elementId);
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand("copy");
+            alert("Copied the text: " + copyText.value);
+        }
+    </script>
 </body>
 </html>
